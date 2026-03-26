@@ -33,18 +33,18 @@
 </script>
 
 <div>
-    <h2 class="text-2xl font-medium mb-6 text-slate-100">Available Dogs</h2>
+    <h2 class="text-2xl font-semibold mb-6 text-gray-900 dark:text-gray-100 disco:text-cyan-300">Available Dogs</h2>
     
     {#if loading}
         <!-- loading animation -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {#each Array(6) as _, i}
-                <div class="bg-slate-800/60 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-slate-700/50">
-                    <div class="p-6">
+                <div class="bg-white dark:bg-[#161b22] disco:bg-gradient-to-br disco:from-pink-500 disco:to-purple-600 rounded-lg overflow-hidden border border-gray-300 dark:border-gray-700 disco:border-yellow-400 disco:shadow-2xl disco:shadow-pink-500/50">
+                    <div class="p-5">
                         <div class="animate-pulse">
-                            <div class="h-6 bg-slate-700 rounded w-3/4 mb-3"></div>
-                            <div class="h-4 bg-slate-700 rounded w-1/2 mb-4"></div>
-                            <div class="h-4 bg-slate-700 rounded w-1/4 mt-6"></div>
+                            <div class="h-5 bg-gray-200 dark:bg-gray-700 disco:bg-yellow-300 rounded w-3/4 mb-3"></div>
+                            <div class="h-4 bg-gray-200 dark:bg-gray-700 disco:bg-yellow-300 rounded w-1/2 mb-4"></div>
+                            <div class="h-8 bg-gray-200 dark:bg-gray-700 disco:bg-yellow-300 rounded mt-4"></div>
                         </div>
                     </div>
                 </div>
@@ -52,33 +52,34 @@
         </div>
     {:else if error}
         <!-- error display -->
-        <div class="text-center py-12 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
-            <p class="text-red-400">{error}</p>
+        <div class="text-center py-12 bg-red-50 dark:bg-red-900/20 disco:bg-pink-600 rounded-lg border border-red-300 dark:border-red-800 disco:border-yellow-400">
+            <p class="text-red-700 dark:text-red-400 disco:text-white font-medium">{error}</p>
         </div>
     {:else if dogs.length === 0}
         <!-- no dogs found -->
-        <div class="text-center py-12 bg-slate-800/50 backdrop-blur-sm rounded-xl border border-slate-700">
-            <p class="text-slate-300">No dogs available at the moment.</p>
+        <div class="text-center py-12 bg-blue-50 dark:bg-blue-900/20 disco:bg-cyan-500/20 rounded-lg border border-blue-300 dark:border-blue-800 disco:border-cyan-400">
+            <p class="text-gray-600 dark:text-gray-300 disco:text-white">No dogs available at the moment. Check back soon!</p>
         </div>
     {:else}
         <!-- dog list -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {#each dogs as dog (dog.id)}
                 <a 
                     href={`/dog/${dog.id}`} 
-                    class="group block bg-slate-800/60 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg border border-slate-700/50 hover:border-blue-500/50 hover:shadow-blue-500/10 hover:shadow-xl transition-all duration-300 hover:translate-y-[-6px]"
+                    class="group block bg-white dark:bg-[#161b22] disco:bg-gradient-to-br disco:from-pink-500 disco:to-purple-600 rounded-lg overflow-hidden border border-gray-300 dark:border-gray-700 disco:border-yellow-400 hover:border-gray-400 dark:hover:border-gray-600 disco:hover:border-cyan-300 hover:shadow-md disco:shadow-2xl disco:shadow-pink-500/50 transition-all duration-200"
                 >
-                    <div class="p-6 relative">
-                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600/10 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                        <div class="relative z-10">
-                            <h3 class="text-xl font-semibold text-slate-100 mb-2 group-hover:text-blue-400 transition-colors">{dog.name}</h3>
-                            <p class="text-slate-400 mb-4">{dog.breed}</p>
-                            <div class="mt-4 text-sm text-blue-400 font-medium flex items-center">
-                                <span>View details</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 transform transition-transform duration-300 group-hover:translate-x-2" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
+                    <div class="p-5">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-semibold text-[#0969da] dark:text-[#58a6ff] disco:text-yellow-300 disco:animate-pulse mb-1 group-hover:underline">{dog.name}</h3>
+                                <p class="text-gray-600 dark:text-gray-300 disco:text-white text-sm">{dog.breed}</p>
                             </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500 dark:text-gray-400 disco:text-cyan-300 group-hover:text-gray-700 dark:group-hover:text-gray-300 disco:group-hover:text-yellow-300 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 disco:border-yellow-400">
+                            <span class="text-sm text-gray-500 dark:text-gray-400 disco:text-cyan-300 font-medium">View details →</span>
                         </div>
                     </div>
                 </a>
