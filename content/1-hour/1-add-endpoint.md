@@ -12,6 +12,42 @@ It's standard to work in phases when adding functionality to an application. Giv
 
 The application uses a Flask app with SQLAlchemy as the backend API (in the [/server][server-code] folder), and an Astro app with Svelte as the frontend (in the [/client][client-code] folder). You will explore more of the project later; this exercise will focus solely on the Flask application.
 
+## Application Architecture
+
+```mermaid
+graph TB
+    subgraph Client["Client (Astro + Svelte)"]
+        Browser[Web Browser]
+        Astro[Astro Framework]
+        Svelte[Svelte Components]
+        Browser --> Astro
+        Astro --> Svelte
+    end
+    
+    subgraph Server["Server (Flask + SQLAlchemy)"]
+        Flask[Flask Application]
+        Routes[API Routes]
+        ORM[SQLAlchemy ORM]
+        Flask --> Routes
+        Routes --> ORM
+    end
+    
+    subgraph Database["Database"]
+        SQLite[(SQLite DB)]
+        Tables[Dogs, Breeds Tables]
+        SQLite --> Tables
+    end
+    
+    Svelte -->|HTTP Requests| Routes
+    Routes -->|JSON Response| Svelte
+    ORM -->|Query/Update| SQLite
+    SQLite -->|Data| ORM
+    
+    style Client fill:#e1f5ff
+    style Server fill:#fff4e1
+    style Database fill:#f0f0f0
+```
+
 > [!NOTE]
 > As you begin making changes to the application, there is always a chance a breaking change could be created. If the page stops working, check the terminal window you used previously to start the application for any error messages. You can stop the app by using <kbd>Ctl</kbd>+<kbd>C</kbd>, and restart it by running the script appropriate for your operating system: `./scripts/start-app.sh` (macOS / Linux) or `./scripts/start-app.ps1` (Windows PowerShell).
 
