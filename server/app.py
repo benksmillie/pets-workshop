@@ -19,11 +19,35 @@ init_db(app)
 
 @app.route('/api/dogs', methods=['GET'])
 def get_dogs() -> Response:
+    """
+    Get all dogs with optional filtering by breed and availability status.
+    
+    Query Parameters:
+        breed (str, optional): Filter by breed name
+        available (bool, optional): Filter by availability (true/false)
+    
+    Returns:
+        Response: JSON list of dogs
+    """
+    from flask import request
+    from models.dog import AdoptionStatus
+    
     query = db.session.query(
         Dog.id, 
         Dog.name, 
-        Breed.name.label('breed')
+        Breed.name.label('breed'),
+        Dog.status
     ).join(Breed, Dog.breed_id == Breed.id)
+    
+    # Apply breed filter if provided
+    breed_filter: Optional[str] = request.args.get('breed')
+    if breed_filter:
+        query = query.filter(Breed.name == breed_filter)
+    
+    # Apply availability filter if provided
+    available_filter: Optional[str] = request.args.get('available')
+    if available_filter and available_filter.lower() == 'true':
+        query = query.filter(Dog.status == AdoptionStatus.AVAILABLE)
     
     dogs_query = query.all()
     
@@ -68,6 +92,28 @@ def get_dog(id: int) -> Union[Tuple[Response, int], Response]:
     }
     
     return jsonify(dog)
+
+@app.route('/api/breeds', methods=['GET'])
+def get_breeds() -> Response:
+    """
+    Get all available dog breeds.
+    
+    Returns:
+        Response: JSON list of breeds with id and name
+    """
+    # Query all breeds
+    breeds_query = db.session.query(Breed.id, Breed.name).all()
+    
+    # Convert the result to a list of dictionaries
+    breeds_list: List[Dict[str, Any]] = [
+        {
+            'id': breed.id,
+            'name': breed.name
+        }
+        for breed in breeds_query
+    ]
+    
+    return jsonify(breeds_list)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5100)
