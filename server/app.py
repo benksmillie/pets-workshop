@@ -1,6 +1,7 @@
 import os
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any, Optional, Union, Tuple
 from flask import Flask, jsonify, Response
+from flask_cors import CORS
 from models import init_db, db, Dog, Breed
 
 # Get the server directory path
@@ -9,6 +10,9 @@ base_dir: str = os.path.abspath(os.path.dirname(__file__))
 app: Flask = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(base_dir, "dogshelter.db")}'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# Enable CORS
+CORS(app)
 
 # Initialize the database with the app
 init_db(app)
@@ -36,7 +40,7 @@ def get_dogs() -> Response:
     return jsonify(dogs_list)
 
 @app.route('/api/dogs/<int:id>', methods=['GET'])
-def get_dog(id: int) -> tuple[Response, int] | Response:
+def get_dog(id: int) -> Union[Tuple[Response, int], Response]:
     # Query the specific dog by ID and join with breed to get breed name
     dog_query = db.session.query(
         Dog.id,
@@ -65,7 +69,5 @@ def get_dog(id: int) -> tuple[Response, int] | Response:
     
     return jsonify(dog)
 
-## HERE
-
 if __name__ == '__main__':
-    app.run(debug=True, port=5100) # Port 5100 to avoid macOS conflicts
+    app.run(debug=True, host='0.0.0.0', port=5100)
